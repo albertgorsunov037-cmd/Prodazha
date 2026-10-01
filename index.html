@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dentaleducation_ist1 — Оборудование и тренажеры</title>
+  
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    @font-face {
+      font-family: 'BOWLER';
+      src: local('BOWLER'), local('BOWLER Regular');
+      font-weight: 700 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Corinthia';
+      src: local('Corinthia'), local('Corinthia Regular');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --bg-base: #f9fafb;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f3f4f6;
+      --bg-muted: #e5e7eb;
+      
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --text-tertiary: #9ca3af;
+      
+      --border-subtle: rgba(0, 0, 0, 0.06);
+      --border-medium: rgba(0, 0, 0, 0.12);
+      
+      --brand-tg: #24a1de;
+      --brand-tg-glow: rgba(36, 161, 222, 0.25);
+      
+      --gift-bg: #fffbeb;
+      --gift-border: rgba(245, 158, 11, 0.25);
+      --gift-text: #b45309;
+      
+      --radius-xl: 32px;
+      --radius-lg: 20px;
+      --radius-md: 18px;
+      --radius-sm: 10px;
+      --radius-pill: 9999px;
+
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      
+      --font-display: 'BOWLER', 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-cursive: 'Corinthia', cursive, serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 10% 0%, rgba(36, 161, 222, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 40%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      padding: 48px 20px 140px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* Шапка */
+    .header { margin-bottom: 40px; }
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 8vw, 76px);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 0.94;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .brand-subtitle-cursive {
+      font-family: var(--font-cursive);
+      font-size: clamp(28px, 4.8vw, 44px);
+      color: #374151;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+
+    /* Telegram Card */
+    .tg-banner {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 52px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      transition: all 0.35s var(--ease-spring);
+    }
+
+    .tg-banner:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .tg-left { display: flex; align-items: center; gap: 18px; }
+    .tg-avatar-wrap {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #ffffff; border: 1px solid var(--border-subtle);
+      overflow: hidden; flex-shrink: 0; display: flex;
+      align-items: center; justify-content: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    .tg-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .tg-info h3 {
+      font-family: var(--font-display);
+      font-size: 19px;
+      letter-spacing: 0.02em;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .status-dot {
+      width: 8px; height: 8px; background: #10b981;
+      border-radius: 50%; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+      display: inline-block; animation: pulse 2.2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+      50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    }
+
+    .btn-tg {
+      background: var(--text-primary); color: #ffffff;
+      text-decoration: none; font-weight: 700; font-size: 14px;
+      padding: 13px 26px; border-radius: var(--radius-pill);
+      transition: all 0.3s var(--ease-spring);
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-tg:hover {
+      background: var(--brand-tg); transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--brand-tg-glow);
+    }
+
+    .section-intro { margin-bottom: 32px; }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 4.5vw, 36px);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .section-desc { color: var(--text-secondary); font-size: 15px; max-width: 600px; }
+
+    /* Каталог */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      margin-bottom: 72px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      padding: 24px;
+      display: flex; flex-direction: column; position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+      transition: transform 0.4s var(--ease-spring), border-color 0.3s ease, box-shadow 0.4s var(--ease-spring);
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-medium);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+    }
+
+    .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .badge {
+      font-size: 11px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.08em; background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle); padding: 6px 14px;
+      border-radius: var(--radius-pill); color: var(--text-secondary);
+    }
+
+    .arrow-icon {
+      width: 22px; height: 22px; stroke: var(--text-tertiary);
+      stroke-width: 2.2; fill: none; transition: stroke 0.25s, transform 0.35s var(--ease-spring);
+    }
+    .card:hover .arrow-icon { stroke: var(--text-primary); transform: translate(3px, -3px); }
+
+    /* Квадратное окошко 1:1 */
+    .image-preview {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #0d0f12;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-in;
+      position: relative;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.25);
+    }
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: -webkit-optimize-contrast;
+      transition: transform 0.5s var(--ease-spring);
+    }
+    .card:hover .image-preview img { transform: scale(1.04); }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 20px; line-height: 1.3;
+      letter-spacing: 0.01em; margin-bottom: 16px;
+    }
+
+    .features-container {
+      margin-bottom: 24px; flex-grow: 1;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .feature-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg-subtle); padding: 10px 14px;
+      border-radius: var(--radius-sm); font-size: 13.5px;
+      color: #374151; font-weight: 500;
+    }
+    .feature-icon {
+      width: 18px; height: 18px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--brand-tg);
+    }
+    .feature-item.gift {
+      background: var(--gift-bg); border: 1px solid var(--gift-border);
+      color: var(--gift-text); font-weight: 600;
+    }
+
+    .card-bottom {
+      display: flex; flex-direction: column; gap: 14px;
+      padding-top: 18px; border-top: 1px solid var(--border-subtle);
+    }
+    .price-row {
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    .price-wrap { display: flex; flex-direction: column; }
+    .price-label {
+      font-size: 11px; text-transform: uppercase; font-weight: 700;
+      letter-spacing: 0.05em; color: var(--text-tertiary);
+    }
+    .price-val {
+      font-family: var(--font-display); font-size: 23px;
+      letter-spacing: 0.02em; color: var(--text-primary);
+    }
+
+    .card-actions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .btn-buy-now {
+      background: var(--text-primary); color: #fff;
+      border: none; padding: 12px 14px; border-radius: var(--radius-pill);
+      font-size: 13.5px; font-weight: 700; cursor: pointer;
+      transition: all 0.25s var(--ease-spring); text-align: center;
+    }
+    .btn-buy-now:hover {
+      background: #1f2937; transform: translateY(-2px);
+    }
+    .btn-add-cart {
+      background: var(--bg-subtle); color: var(--text-primary);
+      border: 1px solid var(--border-subtle); padding: 12px 14px;
+      border-radius: var(--radius-pill); font-size: 13.5px; font-weight: 700;
+      cursor: pointer; transition: all 0.25s var(--ease-spring);
+    }
+    .btn-add-cart:hover {
+      background: #e5e7eb; border-color: var(--border-medium);
+    }
+
+    /* Блок Showreel */
+    .showreel-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      margin-bottom: 72px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    }
+    .showreel-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; margin-top: 24px;
+    }
+    .showreel-card {
+      background: var(--bg-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      border: 1px solid transparent;
+      transition: all 0.3s var(--ease-spring);
+    }
+    .showreel-card:hover {
+      border-color: var(--border-medium);
+      background: #fff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transform: translateY(-3px);
+    }
+    .showreel-icon {
+      font-size: 30px; margin-bottom: 12px; display: block;
+    }
+    .showreel-card h4 {
+      font-family: var(--font-display); font-size: 16px; margin-bottom: 6px;
+    }
+    .showreel-card p {
+      font-size: 13px; color: var(--text-secondary); line-height: 1.5;
+    }
+
+    /* Блок FAQ */
+    .faq-section {
+      margin-bottom: 72px;
+    }
+    .faq-list {
+      display: flex; flex-direction: column; gap: 14px; margin-top: 24px;
+    }
+    .faq-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .faq-item.active { border-color: var(--border-medium); }
+    .faq-header {
+      padding: 20px 24px;
+      font-weight: 700; font-size: 15.5px;
+      cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; user-select: none;
+    }
+    .faq-header span:last-child {
+      font-size: 18px; transition: transform 0.3s var(--ease-spring);
+    }
+    .faq-item.active .faq-header span:last-child {
+      transform: rotate(45deg);
+    }
+    .faq-body {
+      padding: 0 24px 20px;
+      font-size: 14px; color: var(--text-secondary); line-height: 1.6;
+      display: none;
+    }
+    .faq-item.active .faq-body { display: block; }
+
+    /* Блок отзывов */
+    .reviews-section {
+      margin-bottom: 72px;
+    }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px; margin-top: 24px;
+    }
+    .review-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .review-stars { color: #f59e0b; font-size: 15px; margin-bottom: 12px; }
+    .review-text {
+      font-size: 13.5px; color: #374151; font-style: italic;
+      margin-bottom: 18px; line-height: 1.55;
+    }
+    .review-author {
+      display: flex; align-items: center; gap: 12px;
+      padding-top: 14px; border-top: 1px solid var(--border-subtle);
+    }
+    .review-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--bg-subtle); display: flex;
+      align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; color: var(--brand-tg);
+    }
+    .review-name { font-weight: 700; font-size: 13.5px; }
+    .review-status { font-size: 11.5px; color: var(--text-tertiary); }
+
+    /* Плавающая корзина */
+    .sticky-cart-bar {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 900;
+      background: #111827;
+      color: #fff;
+      border-radius: var(--radius-pill);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.4s var(--ease-spring);
+    }
+    .sticky-cart-bar.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .sticky-cart-bar:hover {
+      background: #1f2937;
+      transform: translateY(-2px);
+      box-shadow: 0 20px 42px rgba(0, 0, 0, 0.35);
+    }
+    .cart-badge-count {
+      background: var(--brand-tg);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .cart-bar-total {
+      font-family: var(--font-display);
+      font-size: 17px;
+    }
+
+    /* Модальное окно корзины */
+    .cart-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(17, 24, 39, 0.45);
+      backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px; z-index: 1001;
+    }
+    .cart-modal-overlay.open { display: flex; }
+    .cart-modal {
+      background: #fff; border-radius: var(--radius-xl);
+      max-width: 480px; width: 100%; padding: 32px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+      position: relative; max-height: 90vh; overflow-y: auto;
+    }
+    .cart-items-list {
+      display: flex; flex-direction: column; gap: 12px;
+      margin: 20px 0; max-height: 260px; overflow-y: auto;
+    }
+    .cart-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 14px; background: var(--bg-subtle);
+      border-radius: var(--radius-sm); font-size: 13.5px;
+    }
+    .cart-item-qty {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .qty-btn {
+      width: 26px; height: 26px; border: 1px solid var(--border-medium);
+      background: #fff; border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+    }
+
+    /* Модалка оформления */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(17, 24, 39, 0.4);
+      backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px; z-index: 1002;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      background: #ffffff; border: 1px solid var(--border-subtle);
+      width: 100%; max-width: 440px; border-radius: var(--radius-xl);
+      padding: 34px; position: relative;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    .modal-close {
+      position: absolute; top: 22px; right: 22px;
+      width: 34px; height: 34px; border-radius: 50%;
+      border: none; background: var(--bg-subtle);
+      color: var(--text-primary); font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-title {
+      font-family: var(--font-display); font-size: 22px;
+      margin-bottom: 6px; text-transform: uppercase;
+    }
+    .modal-subtitle {
+      color: var(--text-secondary); font-size: 14px; margin-bottom: 22px;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 11px; text-transform: uppercase;
+      font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .form-group input {
+      width: 100%; padding: 14px 18px; border-radius: var(--radius-sm);
+      background: var(--bg-base); border: 1px solid var(--border-subtle);
+      font-family: inherit; font-size: 15px; outline: none;
+    }
+    .form-group input:focus {
+      border-color: var(--brand-tg); background: #ffffff;
+      box-shadow: 0 0 0 3px var(--brand-tg-glow);
+    }
+    .btn-submit {
+      width: 100%; background: var(--text-primary); color: #fff;
+      border: none; padding: 15px; border-radius: var(--radius-pill);
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      margin-top: 10px; transition: all 0.3s var(--ease-spring);
+    }
+    .btn-submit:hover {
+      background: var(--brand-tg); transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--brand-tg-glow);
+    }
+
+    /* Лайтбокс */
+    .zoom-lightbox {
+      position: fixed; inset: 0; background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(16px); display: none;
+      align-items: center; justify-content: center;
+      z-index: 2000; padding: 20px; cursor: zoom-out;
+    }
+    .zoom-lightbox.open { display: flex; }
+    .zoom-lightbox img {
+      max-width: 90vmin; max-height: 90vmin; aspect-ratio: 1 / 1; object-fit: cover;
+      border-radius: var(--radius-md); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (max-width: 640px) {
+      .tg-banner { flex-direction: column; align-items: flex-start; }
+      .btn-tg { width: 100%; justify-content: center; }
+      .card-actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <header class="header">
+      <h1 class="brand-title">dentaleducation_ist1</h1>
+      <div class="brand-subtitle-cursive">Практика, мануальные навыки и мастерство</div>
+
+      <div class="tg-banner">
+        <div class="tg-left">
+          <div class="tg-avatar-wrap">
+            <img src="https://i.ibb.co/zW9HS6Pt/image.jpg" alt="dentaleducation_ist1">
+          </div>
+          <div class="tg-info">
+            <h3>@dentaleducation_ist1 <span class="status-dot"></span></h3>
+            <p>1 609 подписчиков • Развиваемся и растем вместе в стоматологии</p>
+          </div>
+        </div>
+        <a href="https://t.me/dentaleducation_ist1" target="_blank" class="btn-tg" onclick="triggerHaptic()">
+          Подписаться на канал
+        </a>
+      </div>
+
+      <div class="section-intro">
+        <h2 class="section-title">Каталог оборудования и фантомов</h2>
+        <p class="section-desc">Отработка практических мануальных навыков для стоматологов и студентов</p>
+      </div>
+    </header>
+
+    <!-- Сетка продукции -->
+    <main class="catalog-grid">
+
+      <!-- Товар 1: Набор терапия -->
+      <article class="card">
+        <div class="card-top">
+          <span class="badge">Терапия</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+        </div>
+        
+        <div class="image-preview" onclick="openZoom('https://i.ibb.co/9mzKgrQY/IMG-6726.jpg')">
+          <img src="https://i.ibb.co/9mzKgrQY/IMG-6726.jpg" alt="Набор стоматолога - терапия">
+        </div>
+
+        <h3 class="card-title">1) Набор стоматолога — терапия</h3>
+
+        <div class="features-container">
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Фантом челюсти</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Турбинный наконечник</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Стоматологический композит</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Набор инструментов</span></div>
+          <div class="feature-item gift"><span class="feature-icon">🎁</span><span>Боры в подарок</span></div>
+        </div>
+
+        <div class="card-bottom">
+          <div class="price-row">
+            <div class="price-wrap">
+              <span class="price-label">Цена</span>
+              <span class="price-val">4 990 ₽</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-buy-now" onclick="quickOrder('Набор стоматолога — терапия', 4990)">Купить сразу</button>
+            <button class="btn-add-cart" onclick="addToCart('Набор стоматолога — терапия', 4990)">В корзину</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Товар 2: Хирургический набор -->
+      <article class="card">
+        <div class="card-top">
+          <span class="badge">Хирургия</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+        </div>
+        
+        <div class="image-preview" onclick="openZoom('https://i.ibb.co/0pKMwmDv/IMG-6728.jpg')">
+          <img src="https://i.ibb.co/0pKMwmDv/IMG-6728.jpg" alt="Хирургический тренажер для шитья">
+        </div>
+
+        <h3 class="card-title">2) Хирургический тренажер для шитья</h3>
+
+        <div class="features-container">
+          <div class="feature-item"><span class="feature-icon">🔗</span><span>Силиконовые модели челюстей</span></div>
+          <div class="feature-item"><span class="feature-icon">🔗</span><span>Инструменты 6 шт</span></div>
+          <div class="feature-item"><span class="feature-icon">🔗</span><span>Шовный материал 5 шт</span></div>
+          <div class="feature-item"><span class="feature-icon">🔗</span><span>Хирургические лезвия 5 шт</span></div>
+          <div class="feature-item gift"><span class="feature-icon">✦</span><span>Перчатки</span></div>
+        </div>
+
+        <div class="card-bottom">
+          <div class="price-row">
+            <div class="price-wrap">
+              <span class="price-label">Цена</span>
+              <span class="price-val">1 790 ₽</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-buy-now" onclick="quickOrder('Хирургический тренажер для шитья', 1790)">Купить сразу</button>
+            <button class="btn-add-cart" onclick="addToCart('Хирургический тренажер для шитья', 1790)">В корзину</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Товар 3: Реставрационный набор (Только базовый) -->
+      <article class="card">
+        <div class="card-top">
+          <span class="badge">Премиум</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+        </div>
+        
+        <div class="image-preview" onclick="openZoom('https://i.ibb.co/S70ywFSv/IMG-6725.jpg')">
+          <img src="https://i.ibb.co/S70ywFSv/IMG-6725.jpg" alt="Набор для реставрации: Терапия">
+        </div>
+
+        <h3 class="card-title">3) Набор для реставрации: Терапия</h3>
+
+        <div class="features-container">
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Кисти моделировочные</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Аппликаторы</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Композит А2 (лучшее качество для реставраций)</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Модели зубов для реставраций</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Фантом челюсти</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>УФ лампа</span></div>
+          <div class="feature-item"><span class="feature-icon">✦</span><span>Набор гладилок (подобие LM ARTE)</span></div>
+          <div class="feature-item gift"><span class="feature-icon">🎁</span><span>Моделировочная смола в комплекте</span></div>
+        </div>
+
+        <div class="card-bottom">
+          <div class="price-row">
+            <div class="price-wrap">
+              <span class="price-label">Стоимость</span>
+              <span class="price-val">9 500 ₽</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-buy-now" onclick="quickOrder('Набор для реставрации', 9500)">Купить сразу</button>
+            <button class="btn-add-cart" onclick="addToCart('Набор для реставрации', 9500)">В корзину</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Товар 4: Отдельные расходники -->
+      <article class="card">
+        <div class="card-top">
+          <span class="badge">Расходники</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+        </div>
+        
+        <div class="image-preview" onclick="openZoom('https://i.ibb.co/9mzKgrQY/IMG-6726.jpg')">
+          <img src="https://i.ibb.co/9mzKgrQY/IMG-6726.jpg" alt="Отдельные расходники и материалы">
+        </div>
+
+        <h3 class="card-title">4) Отдельные расходники и материалы</h3>
+
+        <div class="features-container">
+          <div class="feature-item"><span class="feature-icon">📦</span><span>Фантомы челюсти и модели</span></div>
+          <div class="feature-item"><span class="feature-icon">📦</span><span>Алмазные и твердосплавные боры</span></div>
+          <div class="feature-item"><span class="feature-icon">📦</span><span>Стоматологические композиты и краски</span></div>
+          <div class="feature-item"><span class="feature-icon">📦</span><span>Аппликаторы (браши), матрицы, клинья</span></div>
+          <div class="feature-item"><span class="feature-icon">📦</span><span>Шовный материал и хирургические лезвия</span></div>
+        </div>
+
+        <div class="card-bottom">
+          <div class="price-row">
+            <div class="price-wrap">
+              <span class="price-label">Прайс</span>
+              <span class="price-val">По запросу</span>
+            </div>
+          </div>
+          <div class="card-actions" style="grid-template-columns: 1fr;">
+            <button class="btn-buy-now" onclick="quickOrder('Отдельные расходники и материалы', 0)">Запросить прайс-лист</button>
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- Блок Showreel / Практика в действии -->
+    <section class="showreel-section">
+      <div class="section-intro" style="margin-bottom:0;">
+        <h2 class="section-title">Практика в деталях</h2>
+        <p class="section-desc">Тренажеры разработаны для максимального приближения к реальному клиническому приему</p>
+      </div>
+      <div class="showreel-grid">
+        <div class="showreel-card">
+          <span class="showreel-icon">🧵</span>
+          <h4>Шовный тренажер</h4>
+          <p>Многослойный силикон с армированием точно передает плотность и сопротивление слизистой десны при проколе атравматической иглой.</p>
+        </div>
+        <div class="showreel-card">
+          <span class="showreel-icon">⚡️</span>
+          <h4>Турбинный наконечник</h4>
+          <p>Стандартное быстросъемное соединение M4, ровный ход под давлением и защита от биения бора для чистой препарации полостей.</p>
+        </div>
+        <div class="showreel-card">
+          <span class="showreel-icon">🦷</span>
+          <h4>Модели зубов для реставрации</h4>
+          <p>Анатомические фиссуры и полости I–IV классов по Блэку для отработки послойной эстетической реставрации композитом.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Блок FAQ: Доставка и оплата -->
+    <section class="faq-section">
+      <div class="section-intro">
+        <h2 class="section-title">Доставка и оплата</h2>
+        <p class="section-desc">Все, что нужно знать перед оформлением заказа</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item active">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Как осуществляется доставка?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-body">
+            Отправляем заказы по всей России через <strong>СДЭК</strong> (до ПВЗ или курьером до двери) и <strong>Почту России</strong>. Сразу после отправки высылаем трек-номер для отслеживания посылки в Telegram.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Сколько времени занимает отправка?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-body">
+            Все базовые наборы есть в наличии. Отправка производится в день заказа либо на следующий рабочий день после согласования деталей.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Какие есть способы оплаты?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-body">
+            Оплата производится переводом через Систему быстрых платежей (СБП) на карту любого банка, либо безналичным расчетом при заказе на группу или кафедру.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Проверяется ли инструмент перед отправкой?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-body">
+            Да, каждый турбинный наконечник, фантом и набор инструмента проходит обязательную проверку резьбовых соединений и целостности перед упаковкой.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Блок отзывов -->
+    <section class="reviews-section">
+      <div class="section-intro">
+        <h2 class="section-title">Отзывы студентов и врачей</h2>
+        <p class="section-desc">Реальные отзывы коллег из нашего Telegram-канала</p>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">«Брал хирургический тренажер для подготовки к аккредитации. Силикон плотный, нитка не прорезает край при узлах, инструменты в руке сидят как надо. Спасибо!»</p>
+          </div>
+          <div class="review-author">
+            <div class="review-avatar">МК</div>
+            <div>
+              <div class="review-name">Максим К.</div>
+              <div class="review-status">Студент 5 курса, ПМГМУ</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">«Терапевтический комплект пришел за 3 дня СДЭКом. Наконечник рабочий, боры в боксе отличные. Моделировать фиссуры на фантоме одно удовольствие.»</p>
+          </div>
+          <div class="review-author">
+            <div class="review-avatar">АВ</div>
+            <div>
+              <div class="review-name">Алина В.</div>
+              <div class="review-status">Ординатор 1 года, терапия</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div>
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">«Заказывали наборы для тренировки на группу. Все упаковано надежно, в подарок положили браши и расходники. Рекомендую канал!»</p>
+          </div>
+          <div class="review-author">
+            <div class="review-avatar">ДС</div>
+            <div>
+              <div class="review-name">Денис С.</div>
+              <div class="review-status">Староста группы, МГМСУ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Плавающая корзина -->
+  <div class="sticky-cart-bar" id="stickyCart" onclick="openCartModal()">
+    <span class="cart-badge-count" id="cartCount">0</span>
+    <span>Корзина:</span>
+    <span class="cart-bar-total" id="cartTotal">0 ₽</span>
+    <span style="opacity:0.6;">→</span>
+  </div>
+
+  <!-- Модальное окно корзины -->
+  <div class="cart-modal-overlay" id="cartModal">
+    <div class="cart-modal">
+      <button class="modal-close" onclick="closeCartModal()">&times;</button>
+      <h3 class="modal-title">Ваша корзина</h3>
+      <p class="modal-subtitle">Проверьте выбранные товары перед заказом</p>
+      
+      <div class="cart-items-list" id="cartItemsList"></div>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-top:1px solid var(--border-subtle); margin-top:14px;">
+        <span style="font-weight:700;">Итого:</span>
+        <span style="font-family:var(--font-display); font-size:22px;" id="cartModalTotal">0 ₽</span>
+      </div>
+
+      <button class="btn-submit" onclick="proceedToCheckoutFromCart()">Перейти к оформлению</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно заявки -->
+  <div class="modal-overlay" id="orderModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+      <h3 class="modal-title">Оформить заказ</h3>
+      <p class="modal-subtitle" id="modalSub"></p>
+
+      <form onsubmit="submitTelegramOrder(event)">
+        <div class="form-group">
+          <label>Ваше имя</label>
+          <input type="text" id="orderName" placeholder="Иван" required>
+        </div>
+        <div class="form-group">
+          <label>Контактный телефон или @username в Telegram</label>
+          <input type="text" id="orderContact" placeholder="+7 (999) 000-00-00 или @username" required>
+        </div>
+        <div class="form-group">
+          <label>Город доставки (СДЭК / Почта)</label>
+          <input type="text" id="orderCity" placeholder="Москва, Санкт-Петербург и др.">
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Отправить заказ в Telegram</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Лайтбокс -->
+  <div class="zoom-lightbox" id="zoomLightbox" onclick="closeZoom()">
+    <img id="zoomImg" src="" alt="Детальный просмотр">
+  </div>
+
+  <script>
+    // ==========================================
+    // НАСТРОЙКИ TELEGRAM API
+    // ==========================================
+    const MY_TELEGRAM_USERNAME = 'pudger1337';
+    const TELEGRAM_BOT_TOKEN = '8733165428:AAGfP9PYkTSId8-v6qzQLOs9ayKXPr63-mI';
+    const TELEGRAM_CHAT_ID = '829085943';
+    // ==========================================
+
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.expand();
+      tg.ready();
+    }
+
+    function triggerHaptic() {
+      if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('medium');
+      }
+    }
+
+    let cart = [];
+    let singleOrderItem = null;
+
+    function addToCart(title, price) {
+      triggerHaptic();
+      const existing = cart.find(i => i.title === title);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ title, price, qty: 1 });
+      }
+      updateCartUI();
+    }
+
+    function changeQty(index, delta) {
+      triggerHaptic();
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      updateCartUI();
+      renderCartItems();
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((sum, i) => sum + i.qty, 0);
+      const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      
+      const sticky = document.getElementById('stickyCart');
+      if (count > 0) {
+        sticky.classList.add('visible');
+      } else {
+        sticky.classList.remove('visible');
+        closeCartModal();
+      }
+      
+      document.getElementById('cartCount').innerText = count;
+      document.getElementById('cartTotal').innerText = total.toLocaleString('ru-RU') + ' ₽';
+      document.getElementById('cartModalTotal').innerText = total.toLocaleString('ru-RU') + ' ₽';
+    }
+
+    function renderCartItems() {
+      const list = document.getElementById('cartItemsList');
+      if (cart.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:var(--text-tertiary); padding:20px 0;">Корзина пуста</p>';
+        return;
+      }
+      list.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+          <div>
+            <div style="font-weight:700;">${item.title}</div>
+            <div style="font-size:12px; color:var(--text-secondary);">${item.price ? item.price.toLocaleString('ru-RU') + ' ₽' : 'По запросу'}</div>
+          </div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+            <span style="font-weight:700; min-width:18px; text-align:center;">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openCartModal() {
+      triggerHaptic();
+      renderCartItems();
+      document.getElementById('cartModal').classList.add('open');
+    }
+
+    function closeCartModal() {
+      document.getElementById('cartModal').classList.remove('open');
+    }
+
+    function quickOrder(title, price) {
+      triggerHaptic();
+      singleOrderItem = { title, price };
+      document.getElementById('modalSub').innerText = `${title} — ${price ? price.toLocaleString('ru-RU') + ' ₽' : 'По запросу'}`;
+      prefillTgUser();
+      document.getElementById('orderModal').classList.add('open');
+    }
+
+    function proceedToCheckoutFromCart() {
+      triggerHaptic();
+      singleOrderItem = null;
+      const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      document.getElementById('modalSub').innerText = `Заказ из корзины (${cart.length} поз.) на сумму ${total.toLocaleString('ru-RU')} ₽`;
+      closeCartModal();
+      prefillTgUser();
+      document.getElementById('orderModal').classList.add('open');
+    }
+
+    function closeOrderModal() {
+      document.getElementById('orderModal').classList.remove('open');
+    }
+
+    function prefillTgUser() {
+      if (tg?.initDataUnsafe?.user) {
+        const u = tg.initDataUnsafe.user;
+        const nameInput = document.getElementById('orderName');
+        const contactInput = document.getElementById('orderContact');
+        if (!nameInput.value && u.first_name) nameInput.value = u.first_name;
+        if (!contactInput.value && u.username) contactInput.value = '@' + u.username;
+      }
+    }
+
+    async function submitTelegramOrder(e) {
+      e.preventDefault();
+      triggerHaptic();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.innerText = 'Отправка...';
+      submitBtn.disabled = true;
+
+      const name = document.getElementById('orderName').value.trim();
+      const contact = document.getElementById('orderContact').value.trim();
+      const city = document.getElementById('orderCity').value.trim() || 'Не указан';
+
+      let itemsText = '';
+      let totalSumText = '';
+
+      if (singleOrderItem) {
+        itemsText = `• ${singleOrderItem.title} x 1`;
+        totalSumText = singleOrderItem.price ? singleOrderItem.price.toLocaleString('ru-RU') + ' ₽' : 'По запросу';
+      } else {
+        itemsText = cart.map(i => `• ${i.title} (${i.qty} шт.)`).join('\n');
+        const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+        totalSumText = total.toLocaleString('ru-RU') + ' ₽';
+      }
+
+      const message = `🔔 Новый заказ с сайта!\n\n` +
+                      `📦 Товары:\n${itemsText}\n\n` +
+                      `💰 Сумма: ${totalSumText}\n` +
+                      `👤 Клиент: ${name}\n` +
+                      `📱 Контакты: ${contact}\n` +
+                      `📍 Город доставки: ${city}`;
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          alert('Спасибо! Ваш заказ принят. Мы свяжемся с вами в Telegram в ближайшее время.');
+          closeOrderModal();
+          cart = [];
+          updateCartUI();
+        } else {
+          window.open(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent(message)}`, '_blank');
+          closeOrderModal();
+        }
+      } catch (err) {
+        window.open(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent(message)}`, '_blank');
+        closeOrderModal();
+      }
+
+      submitBtn.innerText = 'Отправить заказ в Telegram';
+      submitBtn.disabled = false;
+    }
+
+    function toggleFaq(header) {
+      triggerHaptic();
+      const item = header.parentElement;
+      item.classList.toggle('active');
+    }
+
+    function openZoom(src) {
+      triggerHaptic();
+      document.getElementById('zoomImg').src = src;
+      document.getElementById('zoomLightbox').classList.add('open');
+    }
+
+    function closeZoom() {
+      document.getElementById('zoomLightbox').classList.remove('open');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeOrderModal();
+        closeCartModal();
+        closeZoom();
+      }
+    });
+  </script>
+</body>
+</html>
